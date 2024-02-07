@@ -1,81 +1,45 @@
-<!DOCTYPE html>
 
-<html>
 
-<head>
-    <title>Register</title>
-    <style>
-        body{
-            background-color: rgb(193, 156, 228);
-        }
-       #form1 {
-  position: fixed; /* Stay in place */
-  left: 30%;
-  top: 10%;
-  width: 300px; /* Full width */
-  height: 200px; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(55, 56, 95); /* Fallback color */
-  padding: 60px;
-  color: aliceblue;
-}
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-#resend{
-    margin-top:400px;
-    margin-left:510px;
-    width:100px;
-    
-    height:50px;
-    font-size: 20px;
-    border-radius: 20px;
-    background-color: rgb(33, 70, 70);
-    color: wheat;
 
-}
-input[type=submit]{
-    margin-top:50px;
-    width:100px;
-    height:50px;
-    font-size: 20px;
-    border-radius: 20px;
-    background-color: rgb(33, 70, 70);
-    color: wheat;
-}
-.radio-box{
-    margin-top:-30px;
-}
-h2{
-    margin-top: -30px;
-    margin-left: 30px;
-    color: rgb(213, 217, 221);
-}
-    </style>
-</head>
-<body>
-    {% block includes %}
-    <form id="form1" action="{% url 'otp' uid=uid %}" method="post">
-        <h2>OTP VERIFICATION:</h2>
-        
-        {% csrf_token %}
-        <label for="otp">OTP:         </label>
-        <input id="otp" type="text" name="otp">
-        <input type="submit" value="Activate">
+{% extends 'base.html'%}
+
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y" style="min-height:84vh">
+
+  <!-- ============================ COMPONENT LOGIN   ================================= -->
+    <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+        <div class="card-body">
+        <h4 class="card-title mb-4">OTP Verification</h4>
         {% include 'includes/alerts.html'%}
-        </form>
-        <form method="post" action="{% url 'resend_otp' %}">
+        <form id="form1" action="{% url 'otp' uid=uid %}" method="post">
+           
             {% csrf_token %}
-            <!-- Other form fields related to Resend OTP can be added here -->
-            <button id="resend"type="submit" name="resend_otp">Resend OTP</button>
-        </form>
- 
-        {% endblock includes %}
+            <label for="otp">OTP</label>
+            <input id="otp" class="form-control" type="text" name="otp">
+            <br>
+            <input type="submit" class="form-control btn btn-primary" value="Activate">
+          
+            </form>
+            <br>
+            <br>
+            <form method="post" action="{% url 'resend_otp' %}">
+                {% csrf_token %}
+                <!-- Other form fields related to Resend OTP can be added here -->
+                <button id="resend" class="form-control btn btn-primary btn-sm" type="submit" name="resend_otp">Resend OTP</button>
+            </form>
+           
+        </div> <!-- card-body.// -->
+      </div> <!-- card .// --> 
       
-</body>
-</html>
+
+      
+  <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+  
+  
+  </section>
+  <!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}
+Category List
+{% endblock title %}
+
+
+{% block custom_css %}
+{% endblock custom_css %}
+
+{% block page_title %}
+Category List
+{% endblock page_title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <a href="{% url 'variant_add'%}" class="btn btn-success"> Add New Variant <i
+                            class="fas fa-chevron"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="search-element">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="get">
+                            <button class="btn  btn-primary" type="submit" style="float:right"><i
+                                    class="fas fa-search"></i> Search
+                            </button>
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                   data-width="250" style="width: 250px;float:right" name="filter" value="{{ filter }}">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+    <div class="container">
+        <div class="row">
+            <aside class="col-md-2">
+                <!--   SIDEBAR   -->
+                <ul class="list-group" style="list-style-type: none;">
+                    <li><label class="list-group-item text-center bg-info">Dashboard</label></li>
+                    <li><a class="list-group-item" href="{% url 'category_list' %}"> Categories </a></li>
+                    <li><a class="list-group-item" href="{% url 'product_list' %}"> Products </a></li>
+                    <li><a class="list-group-item" href="{% url 'variant_list' %}"> Variants </a></li>
+                    <li><a class="list-group-item" href="{% url 'order_list_admin'%}"> Orders </a></li>
+                    <li><a class="list-group-item" href="{% url 'users_list' %}"> Users </a></li>
+                    <li><a class="list-group-item" href="{% url 'sales_report' %}"> Sales Report </a></li>
+                    <li><a class="list-group-item" href="{% url 'dashboard'%}"> Profile </a></li>
+                    <li><a class="btn btn-light btn-block" href="{% url 'logout_admin' %}"> <i
+                            class="fa fa-power-off"></i> <span
+                            class="text">Log out</span> </a></li>
+                </ul>
+                <!--   SIDEBAR .//END   -->
+            </aside>
+            <main class="col-md-10">
+                
+                {% include 'includes/alerts.html'%}
+                <article class="card">
+                    <div class="table-responsive">
+                        <div class="table-heading text-center font-weight-bold border-bottom mb-3 bg-info"
+                             style="font-size: 24px; line-height: 1.5;">Variant Details
+                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Product Name</label>
+                                </td>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Variant Category</label>
+                                </td>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Variant Value</label>
+                                </td>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Active</label>
+                                </td>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Update</label>
+                                </td>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Delete</label>
+                                </td>
+                            </tr>
+                            </thead>
+                            {% for variant in variant_list %}
+                            <tr>
+                                <td>
+                                    <p class="title mb-0"> {{ variant.product }} </p>
+                                    <img src="{{variant.image.url }}" class="img-xs border">
+
+                                </td>
+                                <td class="text-center">
+                                    <p class="title mb-0"> {{ variant.variation_category }} </p>
+                                </td>
+                                <td class="text-center">
+                                    <p class="title mb-0"> {{ variant.variation_value }} </p>
+                                </td>
+                                <td class="text-center">
+                                    {% if variant.is_active%}
+                                    Available
+                                    {% else %}
+                                    Not Available
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <a href="{% url 'variant_update' variant.id %}" class="btn btn-info"> Update <i
+                                            class="fas fa-chevron"></i></a>
+                                </td>
+                                <td class="text-center">
+                                    <a href="{% url 'variant_delete' variant.id %}" class="btn btn-danger"
+                                       onclick="return confirm('Are you sure you want to delete this Category?')">
+                                        Delete <i class="fas fa-chevron"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div> <!-- table-responsive .end// -->
+                </article> <!-- order-group.// -->
+            </main>
+        </div> <!-- row.// -->
+    </div>
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock%}
+
+{% block custom_js %}
+{% endblock custom_js %}

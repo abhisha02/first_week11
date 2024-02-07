@@ -1,0 +1,63 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block title %}
+Variant Create
+{% endblock title %}
+
+{% block custom_css %}
+{% endblock custom_css %}
+
+{% block page_title %}
+Variant Create
+{% endblock page_title %}
+
+{% block content %}
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+
+    <!-- ============================ COMPONENT REGISTER   ================================= -->
+    <div class="card mx-auto" style="max-width:520px; margin-top:30px;">
+        <article class="card-body">
+            {% include 'includes/alerts.html' %}
+            <header class="mb-4"><h4 class="card-title">Add Variant</h4></header>
+            <form action="{% url 'variant_add' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label>Select Product</label>
+                        {{ form.product }}
+                    </div> <!-- form-group end.// -->
+                    <div class="col form-group">
+                        <label>Select Variant Category</label>
+                        {{ form.variation_category }}
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row end.// -->
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Value</label>
+                        {{ form.variation_value }}
+                    </div> <!-- form-group end.// -->
+                    <div class="form-group col-md-6">
+                        <label>Stock</label>
+                        {{ form.stock }}
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row.// -->
+                <div class="form-group col-md-6">
+                        <label>Product Image</label>
+                        {{ form.image }}
+                        {{ formset.management_form }}
+                           {% for form in formset %}
+                                {{ form.as_p }}
+                                  {% endfor %}
+                    </div> <!-- form-group end.// -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Add</button>
+                </div> <!-- form-group// -->
+                {{ form.non_field_errors}}
+            </form>
+        </article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}

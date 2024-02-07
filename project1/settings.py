@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'carts',
+    'orders',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -148,8 +150,13 @@ MESSAGE_TAGS = {
   
 }
 
-ACCOUNT_SID='ACb8ab514f2274098e09869d227b049af0'
-AUTH_TOKEN='523ac474bc1c466699cfc4bbd40942eb'
+
+
+ACCOUNT_SID='AC15775712d76787fb92458c53b36e6818'
+AUTH_TOKEN='7e22712b3772b94de016972609c0d873'
 COUNTRY_CODE='+91'
 
-TWILIO_PHONE_NUMBER='+12242054249'
+TWILIO_PHONE_NUMBER='+15713741837'
+PAYPAL_RECEIVER_EMAIL = 'greatkart100.businesssandbox@gmail.com'
+PAYPAL_TEST = True
+

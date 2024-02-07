@@ -11,9 +11,9 @@
 <section class="section-intro padding-y-sm">
 <div class="container">
 
-<div class="intro-banner-wrap">
-	<img src="{% static 'images/banners/cover.jpg'%}" class="img-fluid rounded">
-</div>
+	<div class="intro-banner-wrap">
+		<img src="{% static 'images/banners/coverpic.jpg'%}" class="img-fluid rounded"style="Height: 500px; width:100%;">
+	</div>
 
 </div> <!-- container //  -->
 </section>
@@ -33,10 +33,10 @@
 	{% for product in products %}
 	<div class="col-md-3">
 		<div class="card card-product-grid">
-			<a href="{{product.get_url}}" class="img-wrap"> <img src="{{ product.image.url}}"> </a>
+			<a href="{{product.get_url}}" class="img-wrap"> <img src="{{ product.image.url}}" style="width:100%;"> </a>
 			<figcaption class="info-wrap">
-				<a href="{{product.get_url}}" class="title">{{product.product_name}}</a>
-				<div class="price mt-1"> ₹ {{product.price}}</div> <!-- price-wrap.// -->
+				<center><a href="{{product.get_url}}" class="title">{{product.product_name}}</a>
+				<div class="price mt-1"> ₹ {{product.price}}</div> </center><!-- price-wrap.// -->
 			</figcaption>
 		</div>
 	</div> <!-- col.// -->

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account
+from .models import Account,UserProfile
 from django.conf import settings
 from twilio.rest import Client
 
@@ -51,3 +51,36 @@ class MessageHandler:
                                 from_=f'{settings.TWILIO_PHONE_NUMBER}',
                                 to=f'/{settings.COUNTRY_CODE}, {self.phone_number}'
                                 )    
+        
+
+class UserForm(forms.ModelForm):
+   
+   profile_pic = forms.ImageField(
+    required=False,
+    error_messages={'invalid': {"Image Files only"}},
+    widget=forms.FileInput
+)
+
+   
+   class Meta:
+      model=Account
+      fields=['first_name','last_name','phone_number','profile_pic']
+
+
+   def __init__(self,*args,**kwargs):
+      super(UserForm,self).__init__(*args,**kwargs)
+
+      for field in self.fields:
+         self.fields[field].widget.attrs['class']='form-control'
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['address_line_1', 'address_line_2', 'city', 'state', 'country']
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

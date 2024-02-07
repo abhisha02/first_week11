@@ -1,0 +1,151 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}
+Users List
+{% endblock title %}
+
+
+{% block custom_css %}
+
+{% endblock custom_css %}
+
+{% block page_title %}
+Users List
+{% endblock page_title %}
+
+{% block content %}
+<style>
+    /* You can adjust the width and height values as needed */
+    .small-rounded-image {
+        width: 100px;
+        height: 100px;
+    }
+  </style>
+  {% load static %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="search-element">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="get">
+                            <button class="btn  btn-primary" type="submit" style="float:right"><i
+                                    class="fas fa-search"></i> Search
+                            </button>
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search"
+                                   data-width="250" style="width: 250px;float:right" name="filter" value="{{ filter }}">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+    <div class="container">
+        <div class="row">
+            <aside class="col-md-2">
+                <!--   SIDEBAR   -->
+                <ul class="list-group" style="list-style-type: none;">
+                    <li><label class="list-group-item text-center bg-info">Dashboard</label></li>
+                    <li><a class="list-group-item" href="{% url 'category_list'%}"> Categories </a></li>
+                    <li><a class="list-group-item" href="{% url 'product_list'%}"> Products </a></li>
+                    <li><a class="list-group-item" href="{% url 'variant_list' %}"> Variants </a></li>
+                    <li><a class="list-group-item" href="{% url 'order_list_admin'%}"> Orders </a></li>
+                    <li><a class="list-group-item" href="{% url 'users_list' %}"> Users </a></li>
+                    <li><a class="list-group-item" href="{% url 'sales_report' %}"> Sales Report </a></li>
+                    <li><a class="list-group-item" href="{% url 'dashboard'%}"> Profile </a></li>
+                    <li><a class="btn btn-light btn-block" href="{% url 'logout_admin' %}"> <i
+                            class="fa fa-power-off"></i>
+                        <span class="text">Log out</span> </a></li>
+                </ul>
+                <!--   SIDEBAR .//END   -->
+            </aside>
+            <main class="col-md-10">
+                <article class="card">
+                    <div class="table-responsive">
+                        <div class="table-heading text-center font-weight-bold border-bottom mb-3 bg-info"
+                             style="font-size: 24px; line-height: 1.5;">User's Data
+                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>No</label>
+                                </td>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Name</label>
+                                </td>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Email</label>
+                                </td>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Phone Number</label>
+                                </td>
+                               
+                               
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Status</label>
+                                </td>
+                                <td class="table-heading text-center font-weight-bold bg-primary text-white border-bottom mb-3">
+                                    <label>Action</label>
+                                </td>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                             
+                            {% for profile in users_list %}
+                            <tr>
+                                <td>
+                                    <p class="title mb-0">{{ forloop.counter }} </p>
+                                </td>
+                                <td>
+                                    <p class="title mb-0 "> {{ profile.first_name|capfirst }} </p>
+                                    <a href="{{ profile.get_url }}" class="img-wrap rounded-circle account-img small-rounded-image">
+                                        {% if profile.profile_pic %}
+                                            <img src="{{ profile.profile_pic.url }}">
+                                        {% else %}
+                                            <img src="{% static 'default.jpg' %}">
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <p class="title mb-0"> {{ profile.email }} </p>
+                                </td>
+                                <td class="text-center">
+                                    <p class="title mb-0"> {{ profile.phone_number }} </p>
+                                </td>
+                                
+                           
+                                <td class="text-center">
+                                    {% if profile.is_active %}Active{% else %}Inactive{% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <form method="post" action="{% url 'toggle_user_status' profile.id%}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="fas fa-chevron"></i>
+                                            {% if profile.is_active %}Block{% else %}Unblock{% endif %}
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> <!-- table-responsive .end// -->
+                </article> <!-- order-group.// -->
+            </main>
+        </div> <!-- row.// -->
+    </div>
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock%}
+
+
+{% block custom_js %}
+{% endblock custom_js %}

@@ -1,7 +1,17 @@
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}" role="alert">
-            {{ message.tags }}: {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
+{% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+{% endfor %}
+
+<script>
+    // Function to fade out messages after a specified duration
+    function fadeOutMessages() {
+        $('.alert').delay(3000).fadeOut('slow'); // Fade out after 3 seconds (adjust the duration as needed)
+    }
+
+    // Trigger the fadeOutMessages function on page load
+    $(document).ready(function() {
+        fadeOutMessages();
+    });
+</script>

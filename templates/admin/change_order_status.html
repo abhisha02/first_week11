@@ -1,0 +1,42 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}
+Change Order Status
+{% endblock title %}
+
+
+{% block custom_css %}
+{% endblock custom_css %}
+
+{% block page_title %}
+Change Order Status
+{% endblock page_title %}
+
+{% block content %}
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+    <!-- ============================ COMPONENT REGISTER   ================================= -->
+    <div class="card mx-auto" style="max-width:520px; margin-top:30px;">
+        <article class="card-body">
+            {% include 'includes/alerts.html' %}
+            <header class="mb-4 bg-info"><h4 class="card-title text-center">Change Order Status</h4></header>
+            <form action="{% url 'change_order_status' order_id=order_id %}" method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col form-group">
+                        {{ form.status.label_tag }}
+                        {{ form.status }}
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row end.// -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Change</button>
+                </div> <!-- form-group// -->
+                {{ form.non_field_errors}}
+            </form>
+        </article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+</section>
+    {% endblock %}
+
+    {% block custom_js %}
+    {% endblock custom_js %}

@@ -1,0 +1,144 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}
+Product Update
+{% endblock title %}
+
+
+{% block custom_css %}
+{% endblock custom_css %}
+
+{% block page_title %}
+Product Update
+{% endblock page_title %}
+
+{% block content %}
+<style>
+    .img-s {
+        width: 100px; /* Adjust the width to your desired size */
+        height: auto; /* This maintains the aspect ratio */
+    }
+    </style>
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+    <!-- ============================ COMPONENT REGISTER   ================================= -->
+    <div class="card mx-auto" style="max-width:520px; margin-top:30px;">
+        <article class="card-body">
+            {% include 'includes/alerts.html' %}
+            <header class="mb-4 bg-info"><h4 class="card-title text-center">Update Product Details</h4></header>
+            <form action="{% url 'product_update' product_id=product_id %}" method="POST"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col form-group">
+                        {{ form.product_name.label_tag }}
+                        {{ form.product_name }}
+                    </div> <!-- form-group end.// -->
+                    <div class="col form-group">
+                        {{ form.slug.label_tag }}
+                        {{ form.slug }}
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row end.// -->
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row.// -->
+                <div class="form-row">
+                    <div class="col form-group">
+                        {{ form.price.label_tag }}
+                        {{ form.price }}
+                    </div> <!-- form-group end.// -->
+                    <div class="col form-group">
+                        {{ form.stock.label_tag }}
+                        {{ form.stock }}
+                    </div> <!-- form-group end.// -->
+                </div> <!-- form-row end.// -->
+                <div class="form-row">
+                    <div class="col form-group">
+                        {{ form.category.label_tag }}
+                        {{ form.category }}
+                    </div> <!-- form-group end.// -->
+                    <div class="form-group col-md-6 ">
+                        
+                        {{ form.image.label_tag }}
+                       
+                        <p onchange="previewImage(event)">{{ form.image }}</p>
+                        {{ form.image.errors }}
+                        <br>
+                    <!--<img src="{{ form.instance.cat_image.url }}" class="img-s border" alt="Image Preview">-->
+                    <img id="image-preview" src="{{ form.instance.image.url }}" class="img-s border" alt="Image Preview">
+
+                    
+    <!-- Image Upload Input -->
+                    
+                    </div>
+                </div> <!-- form-row end.// -->
+
+
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    <div class="image-container">
+                        {{ form.as_p }}
+                        <img id="image-preview-{{ form.prefix }}" src="{% if form.instance.addimage %}{{ form.instance.addimage.url }}{% endif %}" class="img-s border" alt="Image Preview">
+                    </div>
+                {% endfor %}
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Update</button>
+                </div> <!-- form-group// -->
+                {{ form.non_field_errors}}
+            </form>
+        </article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+    <script>
+        // JavaScript function to preview the selected image
+        function previewImage(event) {
+            var input = event.target;
+            var preview = document.getElementById('image-preview');
+    
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+    
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+    
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
+    <script>
+        function previewImage(event, prefix) {
+            var input = event.target;
+            var previewId = "image-preview-" + prefix;
+    
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById(previewId).src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                document.getElementById(previewId).src = "";
+            }
+        }
+    
+        // Attach the previewImage function to the change event of each file input
+        document.addEventListener("DOMContentLoaded", function () {
+            var fileInputs = document.querySelectorAll('[type="file"]');
+            fileInputs.forEach(function (input) {
+                input.addEventListener("change", function (event) {
+                    var prefix = input.getAttribute('id').split('-')[1];
+                    previewImage(event, prefix);
+                });
+            });
+        });
+    </script>
+</section>
+    {% endblock %}
+
+    {% block custom_js %}
+    {% endblock custom_js %}

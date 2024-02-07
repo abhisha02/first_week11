@@ -61,7 +61,7 @@
     </div> <!-- col.// -->
     <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
           <div class="d-flex justify-content-end mb-3 mb-lg-0">
-            {% if profile.id is None %}
+            {% if user.id is None %}
             <div class="widget-header">
               <small class="title text-muted">Welcome guest!</small>
               <div> 
@@ -72,9 +72,13 @@
             
             {% else %}
             <div class="widget-header">
-              <small class="title text-muted">Welcome {{profile.first_name}}</small>
+              <small class="title text-muted">Welcome {{user.first_name}}</small>
               <div> 
+                {% if user.is_superadmin %}
+                <a href="{% url 'dashboard_admin'%}">Dashboard</a> <span class="dark-transp"> | </span>
+                {% else %}
                 <a href="{% url 'dashboard'%}">Dashboard</a> <span class="dark-transp"> | </span>
+                {% endif %}
                 <a href="{% url 'logout' %}">Logout</a>
               </div>
             </div>

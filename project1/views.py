@@ -12,8 +12,9 @@ def home(request):
     if 'key1' in request.session:
       
       profile = request.session.get('profile')
-      context = {'profile': profile}
-      return render(request,'home.html',context)
+      products=Product.objects.all().filter(is_available=True)
+      context = {'profile': profile,'products':products}
+      return render(request,'home.html',{'products': products, 'profile': profile}) 
   
    
     products=Product.objects.all().filter(is_available=True)

@@ -9,6 +9,7 @@ class Product(models.Model):
   description=models.TextField(max_length=500,blank=True)
   price=models.IntegerField()
   image=models.ImageField(upload_to='photos/products')
+  image2=models.ImageField(upload_to='photos/products',default='default.jpg',blank=True)
   stock=models.IntegerField()
   is_available=models.BooleanField(default=True)
   category=models.ForeignKey(Category,on_delete=models.CASCADE)
@@ -40,8 +41,15 @@ class Variation(models.Model):
   variation_value=models.CharField(max_length=100)
   is_active =models.BooleanField(default=True)
   created_date=models.DateTimeField(auto_now_add=True)
+  image = models.ImageField(upload_to='photos/products', default='default.jpg')
+  stock = models.IntegerField(default=0)
 
   objects=VariationManager()
 
   def __str__(self):
     return self.variation_value
+  
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    addimage=models.ImageField(upload_to='photos/products')
+    addimage2 = models.ImageField(upload_to='photos/products', default='default.jpg', blank=True)

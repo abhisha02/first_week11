@@ -1,0 +1,160 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}
+Sales Report
+{% endblock title %}
+
+{% block custom_css %}
+{% endblock custom_css %}
+
+{% block page_title %}
+Sales Report
+{% endblock page_title %}
+
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+    <div class="container">
+        <div class="row">
+            <aside class="col-md-2">
+                <!--   SIDEBAR   -->
+                <ul class="list-group" style="list-style-type: none;">
+                    <li><label class="list-group-item text-center bg-dark text-white">Dashboard</label></li>
+                    <li><a class="list-group-item" href="{% url 'category_list'%}"> Categories </a></li>
+                    <li><a class="list-group-item" href="{% url 'product_list'%}"> Products </a></li>
+                    <li><a class="list-group-item" href="{% url 'variant_list' %}"> Variants </a></li>
+                    <li><a class="list-group-item" href="{% url 'order_list_admin'%}"> Orders </a></li>
+                    <li><a class="list-group-item" href="{% url 'users_list' %}"> Users </a></li>
+                    <li><a class="list-group-item" href="{% url 'sales_report' %}"> Sales Report </a></li>
+                    <li><a class="list-group-item" href="{% url 'dashboard'%}"> Profile </a></li>
+                    <li><a class="btn btn-light btn-block" href="{% url 'logout_admin' %}"> <i
+                            class="fa fa-power-off"></i> <span
+                            class="text">Log out</span> </a></li>
+                </ul>
+                <!--   SIDEBAR .//END   -->
+            </aside>
+          
+            <main class="col-md-10">
+                <div class="row">
+                    <div class="m-2 table-heading text-center font-weight-bold border-bottom bg-secondary text-white"
+                                 style="font-size: 24px; line-height: 1.5;">Sales Report
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-3 card text-white m-2 d-flex justify-content-center align-items-center" style="max-width: 8rem; ">
+                      <div class="card-body text-center">
+                        <a href="{% url 'sales_report' %}" class="text-white font-weight-bold btn btn-sm btn-dark" style="font-size: 18px; line-height: 1.5;">Today</a>
+                      </div>
+                    </div>
+                    <div class="col-md-3 card text-white m-2 d-flex justify-content-center align-items-center" style="max-width: 8rem; ">
+                      <div class="card-body text-center">
+                        <a href="{% url 'weekly_sales_report' %}" class="text-white font-weight-bold btn btn-sm btn-dark" style="font-size: 18px; line-height: 1.5;">Weekly</a>
+                      </div>
+                    </div>
+                    <div class="col-md-3 card text-white m-2 d-flex justify-content-center align-items-center" style="max-width: 8rem; ">
+                      <div class="card-body text-center">
+                        <a href="{% url 'monthly_sales_report' %}" class="text-white font-weight-bold btn btn-sm btn-dark" style="font-size: 18px; line-height: 1.5;">Monthly</a>
+                      </div>
+                    </div>
+                    <div class="col-md-3 card text-white m-2 d-flex justify-content-center align-items-center" style="max-width: 8rem; ">
+                      <div class="card-body text-center">
+                        <a href="{% url 'yearly_sales_report' %}" class="text-white font-weight-bold btn btn-sm btn-dark" style="font-size: 18px; line-height: 1.5;">Yearly</a>
+                      </div>
+                    </div>
+                    <div class="col-md-3 card text-white m-2 d-flex justify-content-center align-items-center" style="max-width: 8rem; ">
+                      <div class="card-body text-center">
+                        <a href="{% url 'custom_report'%}" class="text-white font-weight-bold btn btn-sm btn-dark" style="font-size: 18px; line-height: 1.5;">Custom</a>
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% load tz %} {# Load the timezone template tags #}
+                    {% with start_of_month|date:"Y-m-d" as formatted_start %}
+                        {% with end_of_month|date:"Y-m-d" as formatted_end %}
+                            <div class="m-2 table-heading text-center text-white font-weight-bold border-bottom bg-secondary"
+                                 style="font-size: 24px; line-height: 1.5;">
+                                Monthly Sales Report ( 2024-01-06 - {{ formatted_end }})
+                            </div>
+                        {% endwith %}
+                    {% endwith %}
+                    <div class="m-2">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <td class="table-heading text-center font-weight-bold bg-dark text-white border-bottom mb-3">
+                                        <label>Sl. No.</label>
+                                    </td>
+                                    <td class="table-heading text-center font-weight-bold bg-dark text-white border-bottom mb-3">
+                                        <label>Order Date</label>
+                                    </td>
+                                    <td class="table-heading text-center font-weight-bold bg-dark text-white border-bottom mb-3">
+                                        <label>Order Number</label>
+                                    </td>
+                                    <td class="table-heading text-center font-weight-bold bg-dark text-white border-bottom mb-3">
+                                        <label>User's Name</label>
+                                    </td>
+                                    <td class="table-heading text-center font-weight-bold bg-dark text-white border-bottom mb-3">
+                                        <label>Billing Name</label>
+                                    </td>
+                                    <td class="table-heading text-center font-weight-bold bg-dark text-white border-bottom mb-3">
+                                        <label>Amount Paid</label>
+                                    </td>
+                                    <td class="table-heading text-center font-weight-bold bg-dark text-white border-bottom mb-3">
+                                        <label>Payment Status</label>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td class="text-center" style="border: 1px solid #ddd;">
+                                        <p class="title mb-0"> {{ forloop.counter }} </p>
+                                    </td>
+                                    {% with order.created_at|date:"Y-m-d" as formatted_created_at %}
+                                    <td class="text-center" style="border: 1px solid #ddd;">
+                                        <p class="title mb-0"> {{ formatted_created_at }} </p>
+                                    </td>
+                                    {% endwith %}
+                                    <td class="text-center" style="border: 1px solid #ddd;">
+                                        <p class="title mb-0"> <a href="{% url 'order_detail' order.order_number%}"> {{ order.order_number }} </a></p>
+                                    </td>
+                                    <td class="text-center" style="border: 1px solid #ddd;">
+                                        <p class="title mb-0"> {{ order.user.first_name }} </p>
+                                    </td>
+                                    <td class="text-center" style="border: 1px solid #ddd;">
+                                        <p class="title mb-0"> {{ order.address.full_name }} </p>
+                                    </td>
+                                    <td class="text-center" style="border: 1px solid #ddd;">
+                                        <p class="title mb-0"> {{ order.payment.amount_paid }} </p>
+                                    </td>
+                                    <td class="text-center" style="border: 1px solid #ddd;">
+                                        <p class="title mb-0"> {{ order.status }} </p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                                <tr>
+                                    <th colspan="3" class="text-right bg-dark text-white" style="border: 1px solid #ddd;">Grand Total:</th>
+                                    <th class="text-center bg-dark text-white" style="border: 1px solid #ddd;"></th>
+                                    <th class="text-center bg-dark text-white" style="border: 1px solid #ddd;"></th>
+                                    <th class="text-center bg-dark text-white" style="border: 1px solid #ddd;"> {{ total_amount_paid|floatformat:2 }}</th>
+                                    <th class="text-center bg-dark text-white" style="border: 1px solid #ddd;"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div> <!-- row.// -->
+        <div class="text-right">
+            <a href="{% url 'monthly_report_pdf'%}" class="text-white font-weight-bold btn btn-sm btn-dark" style="font-size: 18px; line-height: 1.5;">Download Pdf</a>
+        </div>
+    </div>
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock%}
+
+{% block custom_js %}
+
+
+{% endblock custom_js %}

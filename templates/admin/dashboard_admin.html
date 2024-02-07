@@ -1,0 +1,95 @@
+{% extends 'admin/base_admin.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+	/* You can adjust the width and height values as needed */
+	.small-rounded-image {
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+			
+	}
+	
+</style>
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+	<div class="container" style="height:1000px">
+			<div class="row">
+
+					<aside class="col-md-2">
+							<!-- SIDEBAR -->
+							<ul class="list-group" style="list-style-type: none;">
+									<p class="title mb-0 " style="font-weight: bold;"> {{ user.first_name|capfirst}} </p>
+									<a href="{{user.get_url}}" class="img-wrap rounded-circle account-img small-rounded-image"> <img
+													src="{{ user.profile_pic.url}}" style="border-radius: 50%;"> </a>
+									<br>
+									<br>
+									<li><label class="list-group-item text-center bg-info">Dashboard</label></li>
+									<li><a class="list-group-item" href="{% url 'category_list'%}"> Categories </a></li>
+									<li><a class="list-group-item" href="{% url 'product_list'%}"> Products </a></li>
+									<li><a class="list-group-item" href="{% url 'variant_list'%}"> Variants </a></li>
+									<li><a class="list-group-item" href="{% url 'order_list_admin'%}"> Orders </a></li>
+									<li><a class="list-group-item" href="{% url 'users_list'%}"> Users </a></li>
+									<li><a class="list-group-item" href="{% url 'sales_report' %}"> Sales Report </a></li>
+									<li><a class="list-group-item" href="{% url 'dashboard'%}"> Profile </a></li>
+									<li><a class="btn btn-light btn-block" href="{% url 'logout'%}"> <i class="fa fa-power-off"></i>
+													<span class="text">Log out</span> </a></li>
+							</ul>
+							<!-- SIDEBAR .//END -->
+
+					</aside>
+
+					<!-- New columns for three boxes -->
+					<br>
+					<div class="col-md-2">
+							<!-- Your content for the first box goes here -->
+							<div class="box" style="background-color: #ff9999;width:300px;height:300px; margin-top: 70px; margin-left: 20px;">
+								<p style="color:white; font-weight: bold; font-size:30px; larger; text-align: center;"> Weekly Orders</p>
+							</div>
+					</div>
+
+					<div class="col-md-2">
+							<!-- Your content for the second box goes here -->
+							<div class="box" style="background-color: #99ff99;width:300px;height:300px;margin-top: 70px; margin-left: 200px;">
+								<p style="color:white; font-weight: bold; font-size:30px; larger; text-align: center;"> Visitors Online</p>
+							</div>
+					</div>
+
+					<div class="col-md-2">
+							<!-- Your content for the third box goes here -->
+							<div class="box" style="background-color: #9999ff;width:300px;height:300px;margin-top: 70px; margin-left: 400px;">
+								<p style="color:white; font-weight: bold; font-size:30px; larger; text-align: center;"> Monthly Report</p>
+							</div>
+					</div>
+					<!-- End of new columns -->
+					
+
+			</div> <!-- row.// -->
+			<div class="col-md-2">
+				<!-- Your content for the first box goes here -->
+				<div class="box" style="background-color: #ff9999;width:300px;height:300px; margin-top: 70px; margin-left: 200px;">
+					<p style="color:white; font-weight: bold; font-size:30px; larger; text-align: center;"> Visit and Sales statistics</p>
+				</div>
+		</div>
+
+		<div class="col-md-2">
+				<!-- Your content for the second box goes here -->
+				<div class="box" style="background-color: #99ff99;width:300px;height:300px;margin-top: 70px; margin-left: 400px;">
+					<p style="color:white; font-weight: bold; font-size:30px; larger; text-align: center;"> Traffic sources</p>
+				</div>
+		</div>
+
+		<div class="col-md-2">
+				<!-- Your content for the third box goes here -->
+				<div class="box" style="background-color: #9999ff;width:300px;height:300px;margin-top: 70px; margin-left: 600px;">
+					<p style="color:white; font-weight: bold; font-size:30px; larger; text-align: center;"> weekly Report</p>
+				</div>
+		</div>
+
+	</div>
+</section>
+
+<!-- ========================= SECTION CONTENT END// ========================= -->
+{% endblock %}

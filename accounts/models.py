@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 import uuid
 
-# Create your models here.
+
 
 
 
@@ -62,13 +62,15 @@ class Account(AbstractBaseUser):
   username = models.CharField(max_length=50)
   email=models.EmailField(max_length=100,unique=True)
   phone_number=models.CharField(max_length=50)
+  profile_pic=models.ImageField(upload_to='photos/products',blank=True,default='default.jpg')
+  wallet=models.FloatField(null=True,default=0.0)
   
   #required
   date_joined=models.DateTimeField(auto_now_add=True)
   last_login=models.DateTimeField(auto_now_add=True)
   is_admin=models.BooleanField(default=False)
   is_staff=models.BooleanField(default=False)
-  is_active=models.BooleanField(default=False)
+  is_active=models.BooleanField(default=True)
   is_superadmin=models.BooleanField(default=False)
 
   USERNAME_FIELD='email'
@@ -85,6 +87,8 @@ class Account(AbstractBaseUser):
   
   def has_module_perms(self,add_label):
     return True
+  class Meta:
+        ordering = ['-date_joined']
   
 
 class AccountUser(AbstractBaseUser):
@@ -95,7 +99,7 @@ class AccountUser(AbstractBaseUser):
     phone_number=models.CharField(max_length=50)
     session = models.CharField(max_length=255, blank=True, null=True)
 
-    #     Required
+    #Required
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
@@ -118,3 +122,37 @@ class Profile(models.Model):
   
     otp = models.CharField(max_length=100, null=True, blank=True)
     uid = models.CharField(default=f'{uuid.uuid4}',max_length=200)
+
+
+
+class Address(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=20, default='')
+    phone_number = models.CharField(max_length=15)
+    address_line_1 = models.CharField(max_length=100)
+    address_line_2 = models.CharField(blank=True, max_length=100)
+    city = models.CharField(max_length=20)
+    state = models.CharField(max_length=20)
+    country = models.CharField(max_length=20)
+    zipcode = models.CharField(max_length=6)
+    on_del=models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.full_name
+    
+
+class UserProfile(models.Model):
+   user=models.OneToOneField(Account,on_delete=models.CASCADE)
+   address_line_1 = models.CharField(max_length=100)
+   address_line_2 = models.CharField(blank=True, max_length=100)
+   city = models.CharField(max_length=20)
+   state = models.CharField(max_length=20)
+   country = models.CharField(max_length=20)
+
+
+
+   def __str__(self):
+      return self.user.first_name
+   def full_address(self):
+      return f'{self.address_line_1} {self.address_line_2}'
+  

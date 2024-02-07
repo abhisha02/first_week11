@@ -1,6 +1,42 @@
 {% extends 'base.html'%}
  {% load static %}
 {% block content %}
+<style>
+  /* Your custom styles */
+.slider {
+    width: 80%;
+    margin: auto;
+}
+
+.slick-prev, .slick-next {
+    font-size: 24px;
+    color: #000;
+}
+
+.slick-prev:hover, .slick-next:hover {
+    color: #333;
+}
+
+ul.thumb{
+  margin:0 auto;
+  padding:0;
+  float:left;
+}
+ul.thumb li{
+  list-style:none;
+  margin:10px;
+
+}
+ul.thumb li img{
+  width:80px;
+  height:80px;
+  border:1px solid grey;
+}
+#1{
+  width:300px;
+  height:300px;
+}
+</style>
 <section class="section-content padding-y bg">
   <div class="container">
   
@@ -8,13 +44,22 @@
   <div class="card">
     <div class="row no-gutters">
       <aside class="col-md-6">
-  <article class="gallery-wrap"> 
-    <div class="img-big-wrap">
-       <a href="#"><img src="{{ single_product.image.url}}"></a>
-    </div> <!-- img-big-wrap.// -->
-    
-  </article> <!-- gallery-wrap .end// -->
-      </aside>
+        <article class="gallery-wrap"> 
+            <div class="image-big-wrap mainImage">
+            
+                <center><img src="{{ single_product.image2.url }}" class="xzoom" alt="{{ product.name }} Image" style="width: 500px; height: 550px;"></center>
+            </div>
+        </article> <!-- gallery-wrap .end// -->
+        <ul class="thumb">
+          <li>
+            <a href="{{ single_product.image.url }}" target="mainImage"><img src="{{ single_product.image.url }}" alt="Product Image" class="xzoom"></a>
+            {% for image in additional_images %}
+            <a href="{{ image.addimage.url }}" target="mainImage"><img src="{{ image.addimage.url }}" alt="Product Image" ></a>
+            {% endfor %}
+          <li>
+        </ul>
+
+    </aside>
       <main class="col-md-6 border-left">
 
 <form action="{% url 'add_cart' single_product.id%}" method="POST">
@@ -22,6 +67,9 @@
   <article class="content-body">
   
   <h2 class="title">{{ single_product.product_name }}</h2>
+  <div class="mb-3"> 
+    <var class="price h6">Category: {{single_product.category}}</var> 
+  </div> 
   
   <div class="mb-3"> 
     <var class="price h4">₹{{single_product.price}}</var> 
@@ -63,6 +111,9 @@
     <hr>
     {% if single_product.stock <= 0 %}
      <h5 class="text-danger">Out Of Stock </h5>
+    {% elif not single_product.category.is_available %}
+    <h5 class="text-danger">Temporarily not available </h5>
+    
     {% else %}
       
      <button type="submit"  class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </button>
@@ -111,6 +162,44 @@
   
   </div> <!-- container .//  -->
   </section>
+
   <!-- ========================= SECTION CONTENT END// ========================= -->
+<!-- Add these scripts to the end of the body section of your HTML template -->
+
+
+
+<script>
+	$(document).ready(function(){
+		$('.thumb a').click(function(e){
+			e.preventDefault();
+			$('.mainImage img').attr('src', $(this).attr("href"));
+		})
+	})
+</script>
+<script>
+  $(document).ready(function() {
+      // Initialize xZoom for the main image
+      $('.xzoom').ezPlus({
+          gallery: 'viewer', // Use the 'viewer' div as the gallery for the zoomed image
+          cursor: 'crosshair', // Change cursor to crosshair when zooming
+          zoomType: 'inner' // Set zoom type to inner
+      });
+
+      // Event listener for thumbnail clicks
+      $('.thumb a').click(function(e){
+          e.preventDefault();
+          // Update the main image source when a thumbnail is clicked
+          $('.mainImage img').attr('src', $(this).attr("href"));
+
+          // Re-initialize xZoom for the new main image
+          $('.mainImage img').ezPlus({
+              gallery: 'viewer', // Use the 'viewer' div as the gallery for the zoomed image
+              cursor: 'crosshair', // Change cursor to crosshair when zooming
+              zoomType: 'inner' // Set zoom type to inner
+          });
+      });
+  });
+</script>
+
 
 {% endblock %}
